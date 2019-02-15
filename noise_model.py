@@ -25,6 +25,14 @@ def get_noise_model(noise_type="gaussian,0,50"):
     elif tokens[0] == "text":
         min_occupancy = int(tokens[1])
         max_occupancy = int(tokens[2])
+        
+        def append_word(n):  #添加中文數字字串
+            def Unicode():
+                val = random.randint(0x4e00, 0x9fbf)
+                return chr(val)
+            word = ''.join([ Unicode() for i in range(n)])
+            digit = ''.join([random.choice(string.digits) for i in range(n)])
+            return word + digit
 
         def add_text(img):
             img = img.copy()
@@ -35,7 +43,8 @@ def get_noise_model(noise_type="gaussian,0,50"):
 
             while True:
                 n = random.randint(5, 10)
-                random_str = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(n)])
+                #random_str = ''.join([random.choice(string.ascii_letters + string.digits) for i in range(n)])
+                random_str = append_word(n)
                 font_scale = np.random.uniform(0.5, 1)
                 thickness = random.randint(1, 3)
                 (fw, fh), baseline = cv2.getTextSize(random_str, font, font_scale, thickness)
